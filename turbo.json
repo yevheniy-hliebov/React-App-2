@@ -1,0 +1,28 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "dev": {
+      "cache": false
+    },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "start:prod": {
+      "cache": false
+    },
+    "seed": {
+      "cache": false
+    },
+    "migrate": {
+      "cache": false
+    },
+    "migrate:seed": {
+      "cache": false
+    }
+  }
+}

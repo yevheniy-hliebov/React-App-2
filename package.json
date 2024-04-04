@@ -1,0 +1,29 @@
+{
+  "name": "docker-app",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start:prod",
+    "docker": "docker-compose up -d postgres && sleep 3 && docker-compose up -d nest-api",
+    "docker:down": "docker-compose down",
+    "docker:rm": "docker-compose down -v --rmi all",
+    "db": "docker-compose up -d postgres",
+    "db:down": "docker-compose down postgres",
+    "db:down-v": "docker-compose down -v postgres",
+    "seed": "turbo run seed",
+    "migrate": "turbo run migrate",
+    "migrate:seed": "turbo run migrate:seed"
+  },
+  "keywords": [],
+  "author": "yevheniy-hliebov <yevheniy.hliebov@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "turbo": "^1.13.2"
+  },
+  "workspaces": [
+    "apps/*"
+  ]
+}
