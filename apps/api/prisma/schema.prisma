@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,7 +7,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Cat {
-  id   Int    @id @default(autoincrement())
-  name String
+model Board {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  lists      List[]
+  history    History[]
+  Task       Task[]
+}
+
+model List {
+  id         Int      @id @default(autoincrement())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  board      Board    @relation(fields: [board_id], references: [id], onDelete: Cascade)
+  board_id   Int
+  tasks      Task[]
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  due_date    DateTime?
+  priority    Priority? @relation(fields: [priority_id], references: [id], onDelete: SetNull)
+  priority_id Int?
+  list        List      @relation(fields: [list_id], references: [id])
+  list_id     Int
+  board       Board     @relation(fields: [board_id], references: [id])
+  board_id    Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+}
+
+model Priority {
+  id    Int    @id @default(autoincrement())
+  name  String
+  tasks Task[]
+}
+
+model History {
+  id         Int      @id @default(autoincrement())
+  board      Board    @relation(fields: [board_id], references: [id], onDelete: Cascade)
+  board_id   Int
+  action     String
+  model      String
+  model_id   Int
+  data       String
+  field      String?
+  old_value  String?
+  new_value  String?
+  created_at DateTime @default(now())
 }
