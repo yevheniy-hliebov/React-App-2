@@ -11,16 +11,16 @@ services:
     depends_on:
       - postgres
     env_file:
-      - ./apps/api/.env
+      - apps/api/.env
 
   postgres:
     image: postgres:14
-    container_name: postgresprisma
+    container_name: db
     restart: always
     ports:
       - 3080:5432
     env_file:
-      - ./apps/api/.env
+      - apps/api/.env
     volumes:
       - postgres:/var/lib/postgresql/data
 

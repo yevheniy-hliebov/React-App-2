@@ -38,4 +38,4 @@ RUN npm run build
 
 EXPOSE 3000
 # new migrate and start app script
-CMD [  "npm", "run", "start:migrate:prod" ]
+CMD [  "npm", "run", "prod:migrate:seed" ]
