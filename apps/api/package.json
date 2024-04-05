@@ -15,7 +15,7 @@
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "start:migrate:prod": "npx prisma migrate deploy && npm run start:prod",
+    "prod:migrate:seed": "npx prisma migrate deploy && sleep 3 && npm run seed && npm run start:prod",
     "migrate": "npx prisma migrate dev",
     "migrate:init": "npx prisma migrate dev --name init",
     "seed": "npx prisma db seed",

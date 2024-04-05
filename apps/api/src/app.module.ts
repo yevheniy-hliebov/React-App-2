@@ -6,6 +6,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { BoardModule } from './board/board.module';
 import { ListModule } from './list/list.module';
 import { TaskModule } from './task/task.module';
+import { HistoryModule } from './history/history.module';
+import { PriorityModule } from './priority/priority.module';
 
 @Module({
   imports: [
@@ -14,7 +16,9 @@ import { TaskModule } from './task/task.module';
     }),
     BoardModule,
     ListModule,
-    TaskModule
+    TaskModule,
+    PriorityModule,
+    HistoryModule
   ],
   controllers: [AppController],
   providers: [AppService],

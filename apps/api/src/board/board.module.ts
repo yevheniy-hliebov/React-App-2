@@ -4,11 +4,9 @@ import { BoardService } from './board.service';
 import { BoardController } from './board.controller';
 
 @Module({
-  imports: [
-    PrismaModule
-  ],
+  imports: [PrismaModule],
   controllers: [BoardController],
   providers: [BoardService],
   exports: [BoardService],
 })
-export class BoardModule {}
+export class BoardModule { }

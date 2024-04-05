@@ -1,19 +1,19 @@
-import { IsInt, IsOptional, IsString, IsDateString } from 'class-validator';
+import { IsOptional, IsDateString, IsNumber, MinLength, IsNotEmpty } from 'class-validator';
 
 export class UpdateTaskDto {
-  @IsString()
   @IsOptional()
-  name: string;
+  @IsNotEmpty()  
+  @MinLength(3)  
+  name?: string;
 
-  @IsString()
   @IsOptional()
-  description: string;
-
+  description?: string;
+  
+  @IsOptional()
   @IsDateString()
-  @IsOptional()
-  due_date: string;
+  due_date?: Date;
 
-  @IsInt()
   @IsOptional()
-  priority_id: number;
+  @IsNumber()
+  priority_id?: number;
 }

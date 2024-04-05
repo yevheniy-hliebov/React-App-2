@@ -2,44 +2,46 @@ import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpExceptio
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { Board } from '@prisma/client';
 
 @Controller('boards')
 export class BoardController {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(private readonly boardService: BoardService) { }
 
   @Post()
   @HttpCode(201)
-  async create(@Body() createBoardDto: CreateBoardDto) {
-    return this.boardService.create(createBoardDto);
+  async create(@Body() createBoardDto: CreateBoardDto): Promise<{ success: boolean, board: Board }> {
+    return { success: true, board: await this.boardService.create(createBoardDto) };
   }
 
   @Get()
-  async findAll() {
-    return this.boardService.findAll();
+  async findAll(): Promise<{ success: boolean, boards: Board[] }> {
+    return { success: true, boards: await this.boardService.findAll() };
   }
 
   @Get(':id')
-  async findById(@Param('id') id: number) {
+  async findById(@Param('id') id: number): Promise<{ success: boolean, board: Board }> {
     if (isNaN(id)) {
       throw new HttpException('Invalid board id provided', HttpStatus.BAD_REQUEST);
     }
-    return this.boardService.findById(+id);
+    return { success: true, board: await this.boardService.findById(+id) };
   }
-  
+
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateBoardDto: UpdateBoardDto) {
+  async update(@Param('id') id: number, @Body() updateBoardDto: UpdateBoardDto): Promise<{ success: boolean, board: Board }> {
     if (isNaN(id)) {
       throw new HttpException('Invalid board id provided', HttpStatus.BAD_REQUEST);
     }
-    return this.boardService.update(+id, updateBoardDto);
+    return { success: true, board: await this.boardService.update(+id, updateBoardDto) };
   }
-  
+
   @Delete(':id')
-  @HttpCode(204)
-  async remove(@Param('id') id: number) {
+  @HttpCode(200)
+  async remove(@Param('id') id: number): Promise<{ success: boolean }> {
     if (isNaN(id)) {
       throw new HttpException('Invalid board id provided', HttpStatus.BAD_REQUEST);
     }
-    return this.boardService.remove(+id);
+    await this.boardService.remove(+id);
+    return { success: true };
   }
 }

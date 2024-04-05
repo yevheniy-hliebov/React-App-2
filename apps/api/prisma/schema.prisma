@@ -36,7 +36,7 @@ model Task {
   priority_id Int?
   list        List      @relation(fields: [list_id], references: [id])
   list_id     Int
-  board       Board     @relation(fields: [board_id], references: [id])
+  board       Board     @relation(fields: [board_id], references: [id], onDelete: Cascade)
   board_id    Int
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt

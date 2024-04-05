@@ -2,46 +2,49 @@ import { Controller, Get, Post, Put, Delete, Param, Body, HttpCode, HttpExceptio
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Task } from '@prisma/client';
 
 @Controller('boards/:boardId/lists/:listId/tasks')
 export class TaskController {
-  constructor(private readonly tasksService: TaskService) {}
+  constructor(private readonly tasksService: TaskService) { }
 
   @Post()
-  async create(@Param('boardId') boardId: number, @Param('listId') listId: number, @Body() createTaskDto: CreateTaskDto) {
+  @HttpCode(201)
+  async create(@Param('boardId') boardId: number, @Param('listId') listId: number, @Body() createTaskDto: CreateTaskDto): Promise<{ success: boolean, task: Task }> {
     checkIsNaNId(boardId, listId);
-    return this.tasksService.create(+boardId, +listId, createTaskDto);
+    return { success: true, task: await this.tasksService.create(+boardId, +listId, createTaskDto) };
   }
-  
+
   @Get()
-  async findAll(@Param('boardId') boardId: number, @Param('listId') listId: number) {
+  async findAll(@Param('boardId') boardId: number, @Param('listId') listId: number): Promise<{ success: boolean, tasks: Task[] }> {
     checkIsNaNId(boardId, listId);
-    return this.tasksService.findAll(+boardId, +listId);
+    return { success: true, tasks: await this.tasksService.findAll(+boardId, +listId) };
   }
-  
+
   @Get(':id')
-  async findOne(@Param('boardId') boardId: number, @Param('listId') listId: number, @Param('id') id: number) {
+  async findOne(@Param('boardId') boardId: number, @Param('listId') listId: number, @Param('id') id: number): Promise<{ success: boolean, task: Task }> {
     checkIsNaNId(boardId, listId, id);
-    return this.tasksService.findById(+boardId, +listId, +id);
+    return { success: true, task: await this.tasksService.findById(+boardId, +listId, +id) };
   }
-  
+
   @Put(':id')
-  async update(@Param('boardId') boardId: number, @Param('listId') listId: number, @Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto) {
+  async update(@Param('boardId') boardId: number, @Param('listId') listId: number, @Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto): Promise<{ success: boolean, task: Task }> {
     checkIsNaNId(boardId, listId, id);
-    return this.tasksService.update(+boardId, +listId, +id, updateTaskDto);
+    return { success: true, task: await this.tasksService.update(+boardId, +listId, +id, updateTaskDto) };
   }
 
   @Put(':id/move-to')
-  async moveTo(@Param('boardId') boardId: number, @Param('listId') listId: number, @Param('id') id: number, @Body('newListId') newListId: number) {
+  async moveTo(@Param('boardId') boardId: number, @Param('listId') listId: number, @Param('id') id: number, @Body('list_id') newListId: number): Promise<{ success: boolean, task: Task }> {
     checkIsNaNId(boardId, listId, id, newListId);
-    return this.tasksService.moveTo(+boardId, +listId, +id, +newListId);
+    return { success: true, task: await this.tasksService.moveTo(+boardId, +listId, +id, +newListId) };
   }
-  
+
   @Delete(':id')
-  @HttpCode(204)
-  async remove(@Param('boardId') boardId: number, @Param('listId') listId: number, @Param('id') id: number) {
+  @HttpCode(200)
+  async remove(@Param('boardId') boardId: number, @Param('listId') listId: number, @Param('id') id: number): Promise<{ success: boolean }> {
     checkIsNaNId(boardId, listId, id);
-    return this.tasksService.remove(+boardId, +listId, +id);
+    await this.tasksService.remove(+boardId, +listId, +id)
+    return { success: true };
   }
 }
 
