@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
+import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
 import { Request, Response } from "express";
 import { BaseExceptionFilter } from "@nestjs/core";
 
@@ -9,7 +9,6 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const { status, message } = this.getExceptionDetails(exception);
-    let errors = null;
 
     const exceptionResponse: any = {
       success: false,
@@ -23,14 +22,10 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
     }
 
     // Added validation error field from handling class-validator
-    if ('response' in exception && exception['response'] && 'message' in exception['response']) {
-      const responseMessage = exception['response'].message;
-    
-      if (Array.isArray(responseMessage)) {
-        exceptionResponse.error.errors = responseMessage;
-      }
+    if (exception instanceof BadRequestException) {
+      exceptionResponse.error.errors = Object.values(exception.getResponse())
     }
-    
+        
     response.status(status).json(exceptionResponse);
   }
   
