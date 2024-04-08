@@ -1,0 +1,17 @@
+import React from 'react'
+export { default as AddIcon} from '../assets/icons/add.svg?react'
+export { default as EditIcon} from '../assets/icons/edit.svg?react'
+export { default as DeleteIcon} from '../assets/icons/delete.svg?react'
+export { default as MoreVertIcon} from '../assets/icons/more_vert.svg?react'
+export { default as CycleIcon} from '../assets/icons/cycle.svg?react'
+export { default as CalendarIcon} from '../assets/icons/calendar.svg?react'
+export { default as SellIcon} from '../assets/icons/sell.svg?react'
+export { default as ReloadIcon} from '../assets/icons/reload.svg?react'
+export { default as ArrowDownIcon} from '../assets/icons/arrow_down.svg?react'
+export { default as CloseIcon} from '../assets/icons/close.svg?react'
+export { default as EastIcon} from '../assets/icons/east.svg?react'
+export { default as CheckIcon} from '../assets/icons/check.svg?react'
+export { default as BurgerIcon} from '../assets/icons/burger.svg?react'
+export { default as Loader} from '../assets/loader.svg?react'
+
+export type SvgType = React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
